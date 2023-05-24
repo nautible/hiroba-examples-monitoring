@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: springboot3-back
+  name: springboot3-back
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springboot3-back
+  template:
+    metadata:
+      labels:
+        app: springboot3-back
+    spec:
+      containers:
+      - image: springboot3-back:latest
+        name: springboot3-back
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+          name: app
+          protocol: TCP
+        - containerPort: 9096
+          name: jmx
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+        env:
+        - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+          value: "http://example-collector.monitoring.svc.cluster.local:4317"
+        - name: OTEL_TRACES_EXPORTER
+          value: otlp
+        - name: OTEL_METRICS_EXPORTER
+          value: none
+        - name: OTEL_SERVICE_NAME # Tempo連携時の名前
+          value: "springboot3-back"
