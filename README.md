@@ -1,2 +1,3 @@
 # hiroba-examples-monitoring
-オブジェクトの広場 Prometheus/GrafanaLoki/GrafanaTempoのデータをGrafanaで統合監視しよう 用サンプル
+
+オブジェクトの広場 「PrometheusとGrafanaでオブザーバビリティに入門しよう」用サンプルコード
